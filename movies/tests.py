@@ -11,15 +11,11 @@ class TestUploadCSVView(TestCase):
         self.client = APIClient()
 
     def test_successful_csv_upload(self):
-        url = '/v1/upload-csv/'  # Adjust the URL if needed
+        url = '/v1/upload-csv/'
         data = {
             "csv_file": "https://d31b0xt3oaqqjh.cloudfront.net/cms-documents/584a0b943291161558cdb39be9dd0a9b00a036b6.csv"
         }
-
-        # Send a POST request to upload the CSV
         response = self.client.post(url, data, format='json')
-
-        # Check if the response message is correct
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['message'], "CSV uploaded successfully.")
 
@@ -27,10 +23,8 @@ class TestUploadCSVView(TestCase):
         url = '/v1/upload-csv/'
         data = {}
 
-        # Send a POST request with no CSV file URL
         response = self.client.post(url, data, format='json')
 
-        # Check if the error message is returned
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data['error'], "No 'csv_file' URL provided in the request body.")
 
@@ -40,10 +34,8 @@ class TestUploadCSVView(TestCase):
             "csv_file": "https://invalid-url.com/file.csv"
         }
 
-        # Send a POST request with an invalid CSV URL
         response = self.client.post(url, data, format='json')
 
-        # Check if the error message is returned
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data['error'], "Failed to fetch or parse the CSV content.")
 

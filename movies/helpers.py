@@ -13,6 +13,6 @@ class MovieFilter(filters.FilterSet):
 
 
 class MoviePagination(PageNumberPagination):
-    page_size = 10  # You can adjust the number of items per page
-    page_size_query_param = 'page_size'  # Allows clients to specify page size
-    max_page_size = 100  # Maximum number of items per page
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
