@@ -81,22 +81,6 @@ python manage.py test movies
 - **Method**: `POST`
 - **Description**: Allows users to upload a CSV file containing movie data.
 - **Request Body**: A CSV file (Max size: 100 MB)
-- **Response**:
-  - **Success**:
-    ```json
-    {
-      "status": "success",
-      "message": "CSV file uploaded and processed successfully."
-    }
-    ```
-  - **Failure**:
-    ```json
-    {
-      "status": "failure",
-      "message": "File size exceeds the maximum allowed limit of 100 MB."
-    }
-    ```
-
 ---
 
 ### 2. Movie List API
