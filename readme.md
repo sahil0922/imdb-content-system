@@ -38,7 +38,7 @@ cd <project_directory>
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
 ### 3. . Set Up Environment Variables
