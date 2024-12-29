@@ -1,11 +1,9 @@
 from django.db import models
 
-
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True)
     release_date = models.DateField(null=True)
-    language = models.CharField(max_length=50)
     rating = models.FloatField(default=0.0)
     budget = models.FloatField(default=0.0)
     homepage = models.TextField(null=True)

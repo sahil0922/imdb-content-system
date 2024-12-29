@@ -3,13 +3,10 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListAPIView
-from rest_framework.filters import OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
-
-from movies.helpers import MovieFilter
+from movies.helpers import MoviePagination
 from movies.models import Movie
 from movies.serializers import MovieSerializer
+from rest_framework import generics
 
 
 class UploadCSVView(APIView):
@@ -108,10 +105,30 @@ class UploadCSVView(APIView):
         return Response({"error": message}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MovieListView(ListAPIView):
+class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_class = MovieFilter
-    ordering_fields = ['release_date', 'rating']
-    ordering = ['-release_date']
+    pagination_class = MoviePagination
+
+    def get_queryset(self):
+        queryset = Movie.objects.all()
+
+        # Filter by year (release_date year)
+        year = self.request.query_params.get('year', None)
+        if year:
+            queryset = queryset.filter(release_date__year=year)
+
+        # Filter by language (check if the language is in the languages list)
+        language = self.request.query_params.get('language', None)
+        if language:
+            queryset = queryset.filter(original_language__iexact=language)
+
+        # Sort by release_date or rating
+        sort_by = self.request.query_params.get('sort_by', None)
+        if sort_by:
+            if sort_by == 'release_date':
+                queryset = queryset.order_by('release_date')
+            elif sort_by == 'rating':
+                queryset = queryset.order_by('-rating')
+
+        return queryset
